@@ -1,29 +1,43 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import store, {
+  UPDATING_AUTHOR_FIRST,
+  UPDATING_AUTHOR_LAST,
+} from './../../store.js';
 import './Author.css';
 
 class Author extends Component {
   constructor(props) {
+    //use the getState method that lives on store to store the return value so we can refrence it later
     super(props);
+    const reduxState = store.getState();
     this.state = {
-      authorFirst: '',
-      authorLast: ''
+      authorFirst: reduxState.authorFirst,
+      authorLast: reduxState.authorLast,
     };
   }
 
   handleAuthorFirstChange(nameVal) {
     this.setState({
-      authorFirst: nameVal
+      authorFirst: nameVal,
     });
   }
 
   handleAuthorLastChange(nameVal) {
     this.setState({
-      authorLast: nameVal
+      authorLast: nameVal,
     });
   }
   saveChanges() {
     // Send data to Redux state
+    store.dispatch({
+      type: UPDATING_AUTHOR_FIRST,
+      payload: this.state.authorFirst,
+    });
+    store.dispatch({
+      type: UPDATING_AUTHOR_LAST,
+      payload: this.state.authorLast,
+    });
   }
   render() {
     return (

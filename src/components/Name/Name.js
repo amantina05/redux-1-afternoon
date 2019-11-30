@@ -1,28 +1,40 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import "./Name.css";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+//importing the store & action types
+import store, { UPDATING_NAME, UPDATING_CATEGORY } from './../../store.js';
+import './Name.css';
 
 class Name extends Component {
   constructor(props) {
     super(props);
+    //use the getState method that lives on store to store the return value so we can refrence it later
+    const reduxState = store.getState();
     this.state = {
-      name: '',
-      category: ''
+      name: reduxState.name,
+      category: reduxState.category,
     };
   }
   handleNameChange(nameVal) {
     this.setState({
-      name: nameVal
+      name: nameVal,
     });
   }
 
   handleCategoryChange(catVal) {
     this.setState({
-      category: catVal
+      category: catVal,
     });
   }
   saveChanges() {
     // Send data to Redux state
+    store.dispatch({
+      type: UPDATING_NAME,
+      payload: this.state.name,
+    });
+    store.dispatch({
+      type: UPDATING_CATEGORY,
+      payload: this.state.category,
+    });
   }
   render() {
     return (
@@ -40,14 +52,14 @@ class Name extends Component {
             value={this.state.category}
             onChange={e => this.handleCategoryChange(e.target.value)}
           >
-            <option value={""}>----</option>
-            <option value={"Breakfast"}>Breakfast</option>
-            <option value={"Second Breakfast"}>Second Breakfast</option>
-            <option value={"Brunch"}>Brunch</option>
-            <option value={"Lunch"}>Lunch</option>
-            <option value={"Dinner"}>Dinner</option>
-            <option value={"Drinks"}>Drinks</option>
-            <option value={"Dessert"}>Dessert</option>
+            <option value={''}>----</option>
+            <option value={'Breakfast'}>Breakfast</option>
+            <option value={'Second Breakfast'}>Second Breakfast</option>
+            <option value={'Brunch'}>Brunch</option>
+            <option value={'Lunch'}>Lunch</option>
+            <option value={'Dinner'}>Dinner</option>
+            <option value={'Drinks'}>Drinks</option>
+            <option value={'Dessert'}>Dessert</option>
           </select>
         </div>
         <Link to="/add/author">
